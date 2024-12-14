@@ -1,7 +1,6 @@
 import React from 'react';
 import { TagInputStyleClassesProps, type Tag as TagType } from './tag-input';
 import { Tag, TagProps } from './tag';
-import SortableList, { SortableItem } from 'react-easy-sort';
 import { cn } from '../utils';
 
 export type TagListProps = {
@@ -62,111 +61,41 @@ export const TagList: React.FC<TagListProps> = ({
             classStyleProps?.tagListClasses?.container,
           )}
         >
-          {draggable ? (
-            <SortableList
-              onSortEnd={onSortEnd}
-              // className="flex flex-wrap gap-2 list"
-              className={`flex flex-wrap gap-2 list ${classStyleProps?.tagListClasses?.sortableList}`}
-              dropTarget={<DropTarget />}
-            >
-              {tags.map((tagObj, index) => (
-                <SortableItem key={tagObj.id}>
-                  <div
-                    onMouseDown={() => handleMouseDown(tagObj.id)}
-                    onMouseLeave={handleMouseUp}
-                    className={cn(
-                      {
-                        'border border-solid border-primary rounded-md': draggedTagId === tagObj.id,
-                      },
-                      'transition-all duration-200 ease-in-out',
-                    )}
-                  >
-                    {customTagRenderer ? (
-                      customTagRenderer(tagObj, index === activeTagIndex)
-                    ) : (
-                      <Tag
-                        tagObj={tagObj}
-                        isActiveTag={index === activeTagIndex}
-                        direction={direction}
-                        draggable={draggable}
-                        tagClasses={classStyleProps?.tagClasses}
-                        {...tagListProps}
-                        disabled={disabled}
-                      />
-                    )}
-                  </div>
-                </SortableItem>
-              ))}
-            </SortableList>
-          ) : (
-            tags.map((tagObj, index) =>
-              customTagRenderer ? (
-                customTagRenderer(tagObj, index === activeTagIndex)
-              ) : (
-                <Tag
-                  key={tagObj.id}
-                  tagObj={tagObj}
-                  isActiveTag={index === activeTagIndex}
-                  direction={direction}
-                  draggable={draggable}
-                  tagClasses={classStyleProps?.tagClasses}
-                  {...tagListProps}
-                  disabled={disabled}
-                />
-              ),
-            )
-          )}
+          {tags.map((tagObj, index) =>
+            customTagRenderer ? (
+              customTagRenderer(tagObj, index === activeTagIndex)
+            ) : (
+              <Tag
+                key={tagObj.id}
+                tagObj={tagObj}
+                isActiveTag={index === activeTagIndex}
+                direction={direction}
+                draggable={draggable}
+                tagClasses={classStyleProps?.tagClasses}
+                {...tagListProps}
+                disabled={disabled}
+              />
+            ),
+          )
+          }
         </div>
       ) : (
         <>
-          {draggable ? (
-            <SortableList onSortEnd={onSortEnd} className="flex flex-wrap gap-2 list" dropTarget={<DropTarget />}>
-              {tags.map((tagObj, index) => (
-                <SortableItem key={tagObj.id}>
-                  <div
-                    onMouseDown={() => handleMouseDown(tagObj.id)}
-                    onMouseLeave={handleMouseUp}
-                    className={cn(
-                      {
-                        'border border-solid border-primary rounded-md': draggedTagId === tagObj.id,
-                      },
-                      'transition-all duration-200 ease-in-out',
-                    )}
-                  >
-                    {customTagRenderer ? (
-                      customTagRenderer(tagObj, index === activeTagIndex)
-                    ) : (
-                      <Tag
-                        tagObj={tagObj}
-                        isActiveTag={index === activeTagIndex}
-                        direction={direction}
-                        draggable={draggable}
-                        tagClasses={classStyleProps?.tagClasses}
-                        {...tagListProps}
-                        disabled={disabled}
-                      />
-                    )}
-                  </div>
-                </SortableItem>
-              ))}
-            </SortableList>
-          ) : (
-            tags.map((tagObj, index) =>
-              customTagRenderer ? (
-                customTagRenderer(tagObj, index === activeTagIndex)
-              ) : (
-                <Tag
-                  key={tagObj.id}
-                  tagObj={tagObj}
-                  isActiveTag={index === activeTagIndex}
-                  direction={direction}
-                  draggable={draggable}
-                  tagClasses={classStyleProps?.tagClasses}
-                  {...tagListProps}
-                  disabled={disabled}
-                />
-              ),
-            )
+          {tags.map((tagObj, index) =>
+            customTagRenderer ? (
+              customTagRenderer(tagObj, index === activeTagIndex)
+            ) : (
+              <Tag
+                key={tagObj.id}
+                tagObj={tagObj}
+                isActiveTag={index === activeTagIndex}
+                direction={direction}
+                draggable={draggable}
+                tagClasses={classStyleProps?.tagClasses}
+                {...tagListProps}
+                disabled={disabled}
+              />
+            ),
           )}
         </>
       )}
